@@ -20,3 +20,11 @@ Route::get('/','PagesController@root')->name('root');
 
 // 在之前的路由里加上一个verify参数
 Auth::routes(['verify' => true]);
+
+// auth中间件登录才能访问,varified中间件必须验证邮箱才能访问
+Route::group(['middleware' => [
+    'auth',
+    'verified'
+]],function () {
+   Route::get('user_addresses', 'UserAddressesController@index')->name('user_addresses.index');
+});
