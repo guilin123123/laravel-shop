@@ -15,6 +15,8 @@
 //    return view('welcome');
 //});
 
+//在之前的路由后面配上中间件
 Route::get('/','PagesController@root')->name('root');
 
-Auth::routes();
+// 在之前的路由里加上一个verify参数
+Auth::routes(['verify' => true]);
