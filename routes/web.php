@@ -33,6 +33,8 @@ Route::group(['middleware' => [
    Route::delete('products/{product}/favorite', 'ProductsController@disfavor')->name('products.disfavor');
    Route::get('products/favorites', 'ProductsController@favorites')->name('products.favorites');
    Route::post('cart', 'CartController@add')->name('cart.add');
+   Route::get('cart', 'CartController@index')->name('cart.index');
+   Route::delete('cart/{sku}', 'CartController@remove')->name('cart.remove');
 });
 Route::redirect('/','/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
