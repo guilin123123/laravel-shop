@@ -9,12 +9,13 @@ class Handler extends ExceptionHandler
 {
     /**
      * A list of the exception types that are not reported.
+     * 异常不会打印到日志文件
      *
      * @var array
      */
     protected $dontReport = [
-        //
-    ];
+        InvalidRequestException::class,
+];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
