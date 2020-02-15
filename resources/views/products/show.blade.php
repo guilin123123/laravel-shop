@@ -36,7 +36,11 @@
                         </div>
                         <div class="cart_amount"><label>数量</label><input type="text" class="form-control form-control-sm" value="1"><span>件</span><span class="stock"></span></div>
                         <div class="buttons">
+                            @if($favored)
+                            <button class="btn btn-danger btn-disfavor">取消收藏</button>
+                            @else
                             <button class="btn btn-success btn-favor">❤ 收藏</button>
+                            @endif
                             <button class="btn btn-primary btn-add-to-cart">加入购物车</button>
                         </div>
                     </div>
@@ -66,10 +70,48 @@
 @section('scriptAfterJs')
     <script>
         $(document).ready(function () {
+            // bootstrap选中效果
             $('[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
+            // 点击sku标签事件
             $('.sku-btn').click(function () {
+                // 显示价格和显示库存
                 $('.product-info .price span').text($(this).data('price'));
                 $('.product-info .stock').text('库存:'+ $(this).data('stock') + '件' );
+            });
+            // 点击收藏商品按钮事件
+            $('.btn-favor').click(function () {
+                // ajax请求 url参数是route函数生成
+                axios.post('{{ route('products.favor', ['product' => $product->id]) }}')
+                .then(function () { // 请求成功会执行这个回调
+                    swal('操作成功', '', 'success')
+                        .then(function () { // 弹出框之后
+                            location.reload();
+                        });
+                },function (error) { // 请求失败会执行这个回调
+                    // 如果返回码是401代表没登录
+                    if (error.response && error.response.status === 401) {
+                        swal('请先登录', '', 'error');
+                    } else if (error.response && (error.response.data.msg || error.response.data.message)) {
+                        // 其他有msg或者message字段的情况, 将msg显示给用户
+                        swal(error.response.data.msg ? error.response.data.msg : error.response.data.message, '', 'error');
+                    } else {
+                        // gg
+                        swal('系统错误', '' ,'error');
+                    }
+                });
+            });
+
+            $('.btn-disfavor').click(function () {
+                // ajax delete请求
+                axios.delete('{{ route('products.disfavor', ['product' => $product->id]) }}')
+                // 执行成功
+                .then(function () {
+                    swal('操作成功', '', 'success')
+                        // 弹出框之后刷新页面
+                        .then(function () {
+                            location.reload();
+                        });
+                });
             });
         });
     </script>
