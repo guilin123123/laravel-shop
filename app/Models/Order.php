@@ -90,7 +90,7 @@ class Order extends Model
     public static function findAvailableNo()
     {
         $prefix = date('YmdHis');
-        for ($i = 0; $i < 0; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             // 随机生成6位数字
             $no = $prefix.str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
             // 判断是否已经存在
