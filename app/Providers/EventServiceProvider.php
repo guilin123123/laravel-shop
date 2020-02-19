@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\OrderPaid;
+use App\Listeners\SendOrderPaidMail;
+use App\Listeners\UpdateProductSoldCount;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +20,12 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        // 订单完成后续商品数据的处理
+        // 订单完成后发送邮件通知
+        OrderPaid::class => [
+            UpdateProductSoldCount::class,
+            SendOrderPaidMail::class,
         ],
     ];
 
