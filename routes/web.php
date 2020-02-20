@@ -44,6 +44,7 @@ Route::group(['middleware' => [
    Route::get('orders/{order}/review', 'OrdersController@review')->name('orders.review.show');
    Route::post('orders/{order}/review', 'OrdersController@sendReview')->name('orders.review.store');
    Route::post('orders/{order}/apply_refund', 'OrdersController@applyRefund')->name('orders.apply_refund');
+   Route::get('coupon_codes/{code}', 'CouponCodesController@show')->name('coupon_codes.show');
 });
 Route::redirect('/','/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
