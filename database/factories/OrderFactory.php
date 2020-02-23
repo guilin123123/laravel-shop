@@ -4,31 +4,33 @@
 
 use App\Models\Order;
 use Faker\Generator as Faker;
+use App\Models\User;
+use App\Models\CouponCode;
 
 $factory->define(Order::class, function (Faker $faker) {
     // 随机取一个用户
-    $user = \App\Models\User::query()->inRandomOrder()->first();
-    // 随机取一个用户的地址
+    $user = User::query()->inRandomOrder()->first();
+    // 随机取一个该用户的地址
     $address = $user->addresses()->inRandomOrder()->first();
-    // 10%的概率把订单标记为退款
+    // 10% 的概率把订单标记为退款
     $refund = random_int(0, 10) < 1;
     // 随机生成发货状态
     $ship = $faker->randomElement(array_keys(Order::$shipStatusMap));
     // 优惠券
     $coupon = null;
-    // 30%的概率该订单使用了优惠券
+    // 30% 概率该订单使用了优惠券
     if (random_int(0, 10) < 3) {
-        // 为了避免出现逻辑错误, 我们只选择没有最低金额限制的优惠券
-        $coupon = \App\Models\CouponCode::query()->where('min_amount', 0)->inRandomOrder()->first();
+        // 为了避免出现逻辑错误，我们只选择没有最低金额限制的优惠券
+        $coupon = CouponCode::query()->where('min_amount', 0)->inRandomOrder()->first();
         // 增加优惠券的使用量
         $coupon->changeUsed();
     }
 
     return [
-        'address' => [
-            'address' => $address->full_address,
-            'zip' => $address->zip,
-            'contact_name' => $address->contact_name,
+        'address'        => [
+            'address'       => $address->full_address,
+            'zip'           => $address->zip,
+            'contact_name'  => $address->contact_name,
             'contact_phone' => $address->contact_phone,
         ],
         'total_amount'   => 0,

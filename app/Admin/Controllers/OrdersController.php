@@ -135,26 +135,27 @@ class OrdersController extends AdminController
 
     public function _refundOrder(Order $order)
     {
-        // 判断订单的支付方式
+        // 判断该订单的支付方式
         switch ($order->payment_method) {
             case 'wechat':
-
+                // 微信的先留空
+                // todo
                 break;
             case 'alipay':
-                // 生成一个退款订单号
+                // 用我们刚刚写的方法来生成一个退款订单号
                 $refundNo = Order::getAvailableRefundNo();
-                // 调用支付宝
+                // 调用支付宝支付实例的 refund 方法
                 $ret = app('alipay')->refund([
                     'out_trade_no' => $order->no, // 之前的订单流水号
-                    'refund_amount' => $order->total_amount, // 退款金额
-                    'out_request_no' => $refundNo, //  退款订单号
+                    'refund_amount' => $order->total_amount, // 退款金额，单位元
+                    'out_request_no' => $refundNo, // 退款订单号
                 ]);
-                // 根据支付宝的文档, 如果返回值有sub_code 字段说明退款失败
+                // 根据支付宝的文档，如果返回值里有 sub_code 字段说明退款失败
                 if ($ret->sub_code) {
                     // 将退款失败的保存存入 extra 字段
                     $extra = $order->extra;
                     $extra['refund_failed_code'] = $ret->sub_code;
-                    // 将退款的退款状态标记为退款失败
+                    // 将订单的退款状态标记为退款失败
                     $order->update([
                         'refund_no' => $refundNo,
                         'refund_status' => Order::REFUND_STATUS_FAILED,
@@ -169,8 +170,8 @@ class OrdersController extends AdminController
                 }
                 break;
             default:
-                // 增加代码的健壮性
-                throw new InternalException('未知订单支付方式:'. $order->payment_method);
+                // 原则上不可能出现，这个只是为了代码健壮性
+                throw new InternalException('未知订单支付方式：'.$order->payment_method);
                 break;
         }
     }

@@ -4,6 +4,7 @@
 
 use App\Models\OrderItem;
 use Faker\Generator as Faker;
+use App\Models\Product;
 
 $factory->define(OrderItem::class, function (Faker $faker) {
     // 从数据库随机取一条商品

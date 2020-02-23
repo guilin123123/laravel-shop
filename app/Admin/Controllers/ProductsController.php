@@ -35,7 +35,7 @@ class ProductsController extends AdminController
         $grid->column('price', __('价格'));
         $grid->column('rating', __('评分'));
         $grid->column('sold_count', __('销量'));
-        $grid->column('reciew_count', __('评论数'));
+        $grid->column('review_count', __('评论数'));
         $grid->actions(function ($actions) {
             $actions->disableView();
             $actions->disableDelete();
