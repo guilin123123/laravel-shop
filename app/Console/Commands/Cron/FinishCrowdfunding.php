@@ -52,7 +52,7 @@ class FinishCrowdfunding extends Command
             ->get()
             ->each(function (CrowdfundingProduct $crowdfundingProduct) {
                 // 如果众筹目标金额大于实际众筹金额
-                if ($crowdfundingProduct->torget_amount > $crowdfundingProduct->total_amount) {
+                if ($crowdfundingProduct->target_amount > $crowdfundingProduct->total_amount) {
                     // 众筹失败
                     $this->crowfundinfFailed($crowdfundingProduct);
                 } else {
@@ -76,6 +76,6 @@ class FinishCrowdfunding extends Command
         ]);
 
         // 订单退款逻辑
-        dispatch(new RefundCrowdfundingOrders($$crowdfundingProduct));
+        dispatch(new RefundCrowdfundingOrders($crowdfundingProduct));
     }
 }
