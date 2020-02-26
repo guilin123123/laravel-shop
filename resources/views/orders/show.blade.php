@@ -86,18 +86,15 @@
                             <span>订单状态：</span>
                             <div class="value">
                                 @if($order->paid_at)
-                                @if($order->ship_status === \App\Models\Order::SHIP_STATUS_PENDING)
-                                @if($order->refund_status !== \App\Models\Order::REFUND_STATUS_SUCCESS &&
-                                ($order->type !== \App\Models\Order::TYPE_CROWDFUNDING ||
-                                $order->items[0]->product->crowdfunding->status === \App\Models\CrowdfundingProduct::STATUS_SUCCESS))
-                                已支付
-                                @else
-                                {{ \App\Models\Order::$refundStatusMap[$order->refund_status] }}
-                                @endif
+                                    @if($order->ship_status === \App\Models\Order::SHIP_STATUS_PENDING)
+                                        已支付
+                                    @else
+                                        {{ \App\Models\Order::$refundStatusMap[$order->refund_status] }}
+                                    @endif
                                 @elseif($order->closed)
-                                已关闭
+                                    已关闭
                                 @else
-                                未支付
+                                    未支付
                                 @endif
                             </div>
                         </div>
@@ -121,16 +118,13 @@
                             <button type="button" id="btn-receive" class="btn btn-sm btn-success">确认收货</button>
                         </div>
                         @endif
-                        <!-- 订单已支付，且退款状态是未退款时展示申请退款按钮 -->
-                        @if($order->paid_at && $order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING)
-                            <!-- 不是众筹订单，已支付，且退款状态是未退款时展示申请退款按钮 -->
-                            @if($order->type !== \App\Models\Order::TYPE_CROWDFUNDING &&
-                                $order->paid_at &&
-                                $order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING)
-                                <div class="refund-button">
-                                    <button class="btn btn-sm btn-danger" id="btn-apply-refund">申请退款</button>
-                                </div>
-                            @endif
+                        <!-- 不是众筹订单，已支付，且退款状态是未退款时展示申请退款按钮 -->
+                        @if($order->type !== \App\Models\Order::TYPE_CROWDFUNDING &&
+                            $order->paid_at &&
+                            $order->refund_status === \App\Models\Order::REFUND_STATUS_PENDING)
+                            <div class="refund-button">
+                                <button class="btn btn-sm btn-danger" id="btn-apply-refund">申请退款</button>
+                            </div>
                         @endif
                     </div>
                 </div>

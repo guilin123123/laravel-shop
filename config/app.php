@@ -232,4 +232,6 @@ return [
     // 订单关闭时间
     'order_ttl' => 1800,
 
+    'ngrok_url' => env('NGROK_URL'),
+
 ];
