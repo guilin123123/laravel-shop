@@ -61,8 +61,14 @@ Route::group(['middleware' => [
    Route::get('installments', 'InstallmentsController@index')->name('installments.index');
    // 分期付款详情
    Route::get('installments/{installment}', 'InstallmentsController@show')->name('installments.show');
+   // 分期付款支付宝支付
+   Route::get('installments/{installment}/alipay', 'InstallmentsController@payByAlipay')->name('installments.alipay');
+   // 分期付款网页回调
+   Route::get('installments/alipay/return', 'InstallmentsController@alipayReturn')->name('installments.alipay.return');
 });
 Route::redirect('/','/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
 Route::get('products/{product}', 'ProductsController@show')->name('products.show');
 Route::post('payment/alipay/notify', 'PaymentController@alipayNotify')->name('payment.alipay.notify');
+// 分期付款服务器回调
+Route::post('installments/alipay/notify', 'InstallmentsController@alipayNotify')->name('installments.alipay.notify');
