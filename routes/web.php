@@ -55,6 +55,8 @@ Route::group(['middleware' => [
    Route::get('coupon_codes/{code}', 'CouponCodesController@show')->name('coupon_codes.show');
    // 众筹订单相关路由
    Route::post('crowdfunding_orders', 'OrdersController@crowdfunding')->name('crowdfunding_orders.store');
+   // 分期付款订单
+   Route::post('payment/{order}/installment', 'PaymentController@payByInstallment')->name('payment.installment');
 });
 Route::redirect('/','/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
