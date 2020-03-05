@@ -125,7 +125,7 @@ class OrdersController extends AdminController
                 'extra' => $extra,
             ]);
             // 调用退款逻辑
-            $orderService->refundOrder();
+            $orderService->refundOrder($order);
         } else {
             // 将拒绝退款理由放到订单的extra字段中
             $extra = $order->extra ?: [];
