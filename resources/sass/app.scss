@@ -1,16 +1,10 @@
 @import "~@fortawesome/fontawesome-free/css/all.css";
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
-// Variables
-@import 'variables';
-
 
 /* universal */
 
@@ -64,10 +58,8 @@ body {
         }
     }
 }
-.products-index-page, .products-favorites-page {
-    .pagination {
-        margin-right: 5px;
-    }
+
+@mixin product-list {
     .products-list {
         padding: 0 15px;
         .product-item {
@@ -125,6 +117,16 @@ body {
             }
         }
     }
+}
+
+.products-index-page, .products-favorites-page {
+    .pagination {
+        margin-right: 5px;
+    }
+
+    // scss 的 @include 用于引用一段样式
+    @include product-list;
+
     // 替换原有的 .search-form
     .search-form {
         padding: 0 5px 10px;
@@ -188,7 +190,9 @@ body {
             }
         }
     }
+
 }
+
 .products-show-page {
     .cover {
         width: 100%;
@@ -357,7 +361,17 @@ body {
     .product-description img {
         max-width: 100%;
     }
+    .similar-products {
+        @include product-list;
+        .title {
+            font-weight: normal;
+        }
+        .price {
+            background-color: unset;
+        }
+    }
 }
+
 .cart-index-page {
     .product_list {
         .preview {
@@ -403,6 +417,7 @@ body {
         }
     }
 }
+
 .orders-index-page {
     .list-group-item {
         font-size: 12px;
@@ -447,6 +462,7 @@ body {
         }
     }
 }
+
 .orders-show-page {
     font-size: 12px;
     .vertical-middle {
@@ -512,11 +528,13 @@ body {
             padding-right: 20px;
         }
     }
-    .payment-buttons,.receive-button,.refund-button {
+
+    .payment-buttons, .receive-button, .refund-button {
         margin-top: 10px;
         padding-right: 10px;
     }
 }
+
 .orders-review-show-page {
     .vertical-middle {
         vertical-align: middle;
