@@ -113,6 +113,7 @@ class Migrate extends Command
                     'properties' => $indexClass::getProperties(),
                 ],
             ],
+            'include_type_name' => true
         ]);
         // 重新打开索引
         $this->es->indices()->open(['index' => $aliasName]);
