@@ -62,7 +62,6 @@ class ProductsController extends Controller
 
         // 通过 collect 函数将返回结果转为集合，并通过集合的 pluck 方法取到返回的商品 ID 数组
         $productIds = collect($result['hits']['hits'])->pluck('_id')->all();
-        // 通过 whereIn 方法从数据库中读取商品数据
         $products = Product::query()->byIds($productIds)->get();
         // 返回一个 LengthAwarePaginator 对象
         $pager = new LengthAwarePaginator($products, $result['hits']['total'], $perPage, $page, [
@@ -81,9 +80,9 @@ class ProductsController extends Controller
                         'values' => collect($bucket['value']['buckets'])->pluck('key')->all(),
                     ];
                 })
-                ->filter(function ($property) use($propertyFilters){
+                ->filter(function ($property) use ($propertyFilters) {
                     // 过滤掉只剩下一个值 或者 已经在筛选条件里的属性
-                    return count($property['values']) > 1 && !isset($propertyFilters[$property['key']]);
+                    return count($property['values']) > 1 && !isset($propertyFilters[$property['key']]) ;
                 });
         }
 
