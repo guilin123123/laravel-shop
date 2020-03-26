@@ -90,6 +90,7 @@ class Migrate extends Command
                     $aliasName => new \stdClass(),
                 ],
             ],
+            'include_type_name' => true
         ]);
     }
 
