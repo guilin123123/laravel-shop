@@ -64,7 +64,7 @@ class ProductsController extends Controller
         $productIds = collect($result['hits']['hits'])->pluck('_id')->all();
         $products = Product::query()->byIds($productIds)->get();
         // 返回一个 LengthAwarePaginator 对象
-        $pager = new LengthAwarePaginator($products, $result['hits']['total'], $perPage, $page, [
+        $pager = new LengthAwarePaginator($products, $result['hits']['total']['value'], $perPage, $page, [
             'path' => route('products.index', false), // 手动构建分页的 url
         ]);
 
